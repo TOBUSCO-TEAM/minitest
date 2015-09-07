@@ -13,7 +13,15 @@ class MembersController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator');
+
+    public $components = array('Paginator');
+
+    public $paginate = array(
+        'limit' => 25,
+        'order' => array(
+            'Member.name' => 'asc'
+        )
+    );
 
 /**
  * index method
@@ -21,8 +29,8 @@ class MembersController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Member->recursive = 0;
-		$this->set('members', $this->Paginator->paginate());
+		//$this->Member->recursive = 0;
+		$this->set('members', $this->Member->find('all',array('order' => array('Member.name' => 'asc'))));
 	}
 
 /**

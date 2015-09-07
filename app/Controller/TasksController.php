@@ -105,4 +105,53 @@ class TasksController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+         
+        public function searchperdate($id=null){
+            
+//             $options = array('conditions' => array('Faculty.id' => $id));
+//             $faculdade=$this->Faculty->find('first', $options);
+//            
+//             $this->set('facul',$faculdade);
+            
+            $datesearch = array();
+
+    $query = $this->request->data['Task']['date'];
+
+    $conditions = array(
+        'conditions' => array(
+                'Task.deadline LIKE' => "%$query%"
+        )
+    );
+
+    $datesearch = $this->Task->find('all', $conditions);
+        
+
+$this->set('datesearch', $datesearch);
+//debug($this->data);
+            
+        }
+        public function searchpertask($id=null){
+            
+//             $options = array('conditions' => array('Faculty.id' => $id));
+//             $faculdade=$this->Faculty->find('first', $options);
+//            
+//             $this->set('facul',$faculdade);
+            
+            $datesearch = array();
+
+    $query = $this->request->data['Task']['date'];
+
+    $conditions = array(
+        'conditions' => array(
+                'Task.deadline LIKE' => "%$query%"
+        )
+    );
+
+    $datesearch = $this->Task->find('all', $conditions);
+        
+
+$this->set('datesearch', $datesearch);
+//debug($this->data);
+            
+        }
 }
