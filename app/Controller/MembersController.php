@@ -16,12 +16,12 @@ class MembersController extends AppController {
 
     public $components = array('Paginator');
 
-    public $paginate = array(
-        'limit' => 25,
-        'order' => array(
-            'Member.name' => 'asc'
-        )
-    );
+//    public $paginate = array(
+//        'limit' => 25,
+//        'order' => array(
+//            'Member.name' => 'asc'
+//        )
+//    );
 
 /**
  * index method
@@ -29,7 +29,7 @@ class MembersController extends AppController {
  * @return void
  */
 	public function index() {
-		//$this->Member->recursive = 0;
+		$this->Member->recursive = 0;
 		$this->set('members', $this->Member->find('all',array('order' => array('Member.name' => 'asc'))));
 	}
 
@@ -109,4 +109,43 @@ class MembersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+        
+        public function viewnrtasks($id=null){
+            
+//             $options = array('conditions' => array('Faculty.id' => $id));
+//             $faculdade=$this->Faculty->find('first', $options);
+//            
+//             $this->set('facul',$faculdade);
+            
+        $this->loadModel('Task'); //Chamando um modelo alheio a este controller
+        $tasks = array(); //array de nr de nr de tarefas a cada membro
+        $members = $this->Member->find('all'); //buscando membros
+        foreach ($members as $member): //percorrendo membros
+        $rowCount = $this->Task->find( //contagem de membros associados a uma tarefa
+       'count', array(
+        'conditions' => array(
+         'Task.member_id' => h($member['Member']['id']) //condicao de contagem
+      )
+   )
+);
+        array_push($tasks, $rowCount); //inserindo no array
+            endforeach;
+            
+            $datesearch = array();
+
+    $query = $this->request->data['Task']['date'];
+
+    $conditions = array(
+        'conditions' => array(
+                'Task.deadline LIKE' => "%$query%"
+        )
+    );
+
+    $datesearch = $this->Task->find('all', $conditions);
+        
+
+$this->set('datesearch', $tasks);
+//debug($this->data);
+            
+        }
 }
