@@ -78,6 +78,8 @@
 
 		</div> <!-- end col md 9 -->
 	</div><!-- end row -->
-
+<?php
+                            print_r($tasks);
+?>
 
 </div><!-- end containing of content -->

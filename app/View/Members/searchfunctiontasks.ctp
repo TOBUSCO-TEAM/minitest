@@ -1,25 +1,38 @@
+
+<div class="members index">
+<!-- end row -->
+
 <?php
-echo $this->Form->create(array('controller' => 'tasks', 'action' => 'searchperdate', 'type' => 'post'));
-echo $this->Form->input('buscador', array('placeholder' => 'insert date yyyy-mm-dd', 'label' => false));
+echo $this->Form->create(array('controller' => 'members', 'action' => 'searchfunctiontasks', 'type' => 'post'));
+echo $this->Form->input('buscador', array('placeholder' => 'insert function', 'label' => false));
+echo $this->Form->input('opcoes',array('type'=>'select','options'=>array('Nao possuem tarefa','Possuem Tarefa')));
 echo $this->Form->end('Buscar');
 ?>
+
+
+	<div class="row">
+
 		<div class="col-md-9">
 			<table cellpadding="0" cellspacing="0" class="table table-striped">
 				<thead>
 					<tr>
-						<th>Title</th>
-						<th>Deadline</th>
-                                                <th>Member</th>
+						<th> Name </th>
+						<th>Function</th>
+						<th>Number of Tasks</th>
+						<th class="actions"></th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($result as $task): ?>
+				<?php foreach ($result as $member): ?>
 					<tr>
-						<td><?php echo h($task['Task']['title']); ?>&nbsp;</td>
-						<td><?php echo h($task['Task']['deadline']); ?>&nbsp;</td>
-								<td>
-			<?php echo $this->Html->link($task['Member']['name'], array('controller' => 'members', 'action' => 'view', $task['Member']['id'])); ?>
-		</td>
+						<td><?php echo h($member['Member']['name']); ?>&nbsp;</td>
+						<td><?php echo h($member['Member']['function']); ?>&nbsp;</td>
+                                                <td><?php if(h($member['Member']['task_count'])===null || h($member['Member']['task_count'])==0){
+                                                    echo '0';
+                                                } else {
+                                                    echo h($member['Member']['task_count']);
+                                                }
+                                                     //um campo a echo h($member['Member']mais na tabela members, para ser usada a propriedade counterCache(vide modelo Task) ?>&nbsp;</td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
@@ -44,8 +57,6 @@ echo $this->Form->end('Buscar');
 
 		</div> <!-- end col md 9 -->
 	</div><!-- end row -->
-<?php
-                            print_r($tasks);
-?>
+
 
 </div><!-- end containing of content -->

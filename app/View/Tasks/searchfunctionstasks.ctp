@@ -1,6 +1,6 @@
 <?php
-echo $this->Form->create(array('controller' => 'tasks', 'action' => 'searchperdate', 'type' => 'post'));
-echo $this->Form->input('buscador', array('placeholder' => 'insert date yyyy-mm-dd', 'label' => false));
+echo $this->Form->create(array('controller' => 'tasks', 'action' => 'searchfunctionstasks', 'type' => 'post'));
+echo $this->Form->input('buscador', array('placeholder' => 'insert function', 'label' => false));
 echo $this->Form->end('Buscar');
 ?>
 		<div class="col-md-9">
@@ -8,18 +8,16 @@ echo $this->Form->end('Buscar');
 				<thead>
 					<tr>
 						<th>Title</th>
-						<th>Deadline</th>
-                                                <th>Member</th>
+                                                <th>Description</th>
 					</tr>
 				</thead>
 				<tbody>
+                                    <?php print_r($result);?>
 				<?php foreach ($result as $task): ?>
 					<tr>
 						<td><?php echo h($task['Task']['title']); ?>&nbsp;</td>
-						<td><?php echo h($task['Task']['deadline']); ?>&nbsp;</td>
-								<td>
-			<?php echo $this->Html->link($task['Member']['name'], array('controller' => 'members', 'action' => 'view', $task['Member']['id'])); ?>
-		</td>
+						<td><?php echo h($task['Task']['descrption']); ?>&nbsp;</td>
+								
 					</tr>
 				<?php endforeach; ?>
 				</tbody>

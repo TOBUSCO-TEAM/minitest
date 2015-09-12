@@ -12,6 +12,7 @@ class Task extends AppModel {
  *
  * @var array
  */
+        public $actsAs = array('Containable');
 	public $validate = array(
 		'title' => array(
 			'notBlank' => array(
@@ -58,7 +59,8 @@ class Task extends AppModel {
 			'foreignKey' => 'member_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+                        'counterCache' => true
 		)
 	);
 }

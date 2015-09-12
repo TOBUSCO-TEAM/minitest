@@ -1,25 +1,31 @@
-<?php
-echo $this->Form->create(array('controller' => 'tasks', 'action' => 'searchperdate', 'type' => 'post'));
-echo $this->Form->input('buscador', array('placeholder' => 'insert date yyyy-mm-dd', 'label' => false));
-echo $this->Form->end('Buscar');
-?>
+<div class="members index">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1><?php echo __('Members'); ?></h1>
+			</div>
+		</div><!-- end col md 12 -->
+	</div><!-- end row -->
+
+
+
+	<div class="row">
+
 		<div class="col-md-9">
 			<table cellpadding="0" cellspacing="0" class="table table-striped">
 				<thead>
 					<tr>
-						<th>Title</th>
-						<th>Deadline</th>
-                                                <th>Member</th>
+						<th> Member </th>
+						<th>Number of Tasks</th>
+						
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($result as $task): ?>
+				<?php foreach ($result as $member): ?>
 					<tr>
-						<td><?php echo h($task['Task']['title']); ?>&nbsp;</td>
-						<td><?php echo h($task['Task']['deadline']); ?>&nbsp;</td>
-								<td>
-			<?php echo $this->Html->link($task['Member']['name'], array('controller' => 'members', 'action' => 'view', $task['Member']['id'])); ?>
-		</td>
+						<td><?php echo h($member['Task']['member_id']); ?>&nbsp;</td>
+						<td><?php echo h($member['Task']['conta']); ?>&nbsp;</td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
@@ -44,8 +50,6 @@ echo $this->Form->end('Buscar');
 
 		</div> <!-- end col md 9 -->
 	</div><!-- end row -->
-<?php
-                            print_r($tasks);
-?>
+
 
 </div><!-- end containing of content -->
