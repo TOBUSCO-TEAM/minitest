@@ -17,18 +17,16 @@ class MembersController extends AppController {
      */
     public $components = array('Paginator');
 
-//    public $paginate = array(
-//        'limit' => 25,
-//        'order' => array(
-//            'Member.name' => 'asc'
-//        )
-//    );
+    
 
     /**
      * index method
      *
      * @return void
      */
+    
+     
+    
     public function index() {
         $this->Member->recursive = 0;
         $this->set('members', $this->Member->find('all', array('order' => array('Member.name' => 'asc'))));//lista os membros de forma ascendente de nomes
@@ -179,7 +177,9 @@ class MembersController extends AppController {
 //debug($this->data);
     }
     
-    
+
+
+
 //debug($this->data);
     }
 

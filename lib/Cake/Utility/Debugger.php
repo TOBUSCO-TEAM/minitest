@@ -19,7 +19,7 @@
  */
 
 App::uses('CakeLog', 'Log');
-App::uses('CakeText', 'Utility');
+App::uses('String', 'Utility');
 
 /**
  * Provide custom logging and error handling.
@@ -201,7 +201,7 @@ class Debugger {
  * @param int $line Line that triggered the error
  * @param array $context Context
  * @return bool true if error was handled
- * @deprecated 3.0.0 Will be removed in 3.0. This function is superseded by Debugger::outputError().
+ * @deprecated Will be removed in 3.0. This function is superseded by Debugger::outputError().
  */
 	public static function showError($code, $description, $file = null, $line = null, $context = null) {
 		$self = Debugger::getInstance();
@@ -337,7 +337,7 @@ class Debugger {
 				$trace['path'] = self::trimPath($trace['file']);
 				$trace['reference'] = $reference;
 				unset($trace['object'], $trace['args']);
-				$back[] = CakeText::insert($tpl, $trace, array('before' => '{:', 'after' => '}'));
+				$back[] = String::insert($tpl, $trace, array('before' => '{:', 'after' => '}'));
 			}
 		}
 
@@ -637,7 +637,7 @@ class Debugger {
  *
  * `Debugger::addFormat('custom', $data);`
  *
- * Where $data is an array of strings that use CakeText::insert() variable
+ * Where $data is an array of strings that use String::insert() variable
  * replacement. The template vars should be in a `{:id}` style.
  * An error formatter can have the following keys:
  *
@@ -696,7 +696,7 @@ class Debugger {
  *    straight HTML output, or 'txt' for unformatted text.
  * @param array $strings Template strings to be used for the output format.
  * @return string
- * @deprecated 3.0.0 Use Debugger::outputAs() and Debugger::addFormat(). Will be removed
+ * @deprecated Use Debugger::outputAs() and Debugger::addFormat(). Will be removed
  *   in 3.0
  */
 	public static function output($format = null, $strings = array()) {
@@ -775,7 +775,7 @@ class Debugger {
 
 		if (isset($tpl['links'])) {
 			foreach ($tpl['links'] as $key => $val) {
-				$links[$key] = CakeText::insert($val, $data, $insertOpts);
+				$links[$key] = String::insert($val, $data, $insertOpts);
 			}
 		}
 
@@ -791,14 +791,14 @@ class Debugger {
 			if (is_array($value)) {
 				$value = implode("\n", $value);
 			}
-			$info .= CakeText::insert($tpl[$key], array($key => $value) + $data, $insertOpts);
+			$info .= String::insert($tpl[$key], array($key => $value) + $data, $insertOpts);
 		}
 		$links = implode(' ', $links);
 
 		if (isset($tpl['callback']) && is_callable($tpl['callback'])) {
 			return call_user_func($tpl['callback'], $data, compact('links', 'info'));
 		}
-		echo CakeText::insert($tpl['error'], compact('links', 'info') + $data, $insertOpts);
+		echo String::insert($tpl['error'], compact('links', 'info') + $data, $insertOpts);
 	}
 
 /**

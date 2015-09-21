@@ -242,8 +242,8 @@ class FixtureTask extends BakeTask {
 		$this->_Schema = new CakeSchema();
 		$data = $this->_Schema->read(array('models' => false, 'connection' => $this->connection));
 		if (!isset($data['tables'][$useTable])) {
-			$this->err("<warning>Warning:</warning> Could not find the '${useTable}' table for ${model}.");
-			return;
+			$this->error('Could not find your selected table ' . $useTable);
+			return false;
 		}
 
 		$tableInfo = $data['tables'][$useTable];
@@ -340,7 +340,7 @@ class FixtureTask extends BakeTask {
 							isset($fieldInfo['length']) && $fieldInfo['length'] == 36
 						);
 						if ($isPrimaryUuid) {
-							$insert = CakeText::uuid();
+							$insert = String::uuid();
 						} else {
 							$insert = "Lorem ipsum dolor sit amet";
 							if (!empty($fieldInfo['length'])) {

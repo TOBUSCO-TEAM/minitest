@@ -65,6 +65,13 @@
 			&nbsp;
 		</td>
 </tr>
+<tr>
+		<th><?php echo __('Task Count'); ?></th>
+		<td>
+			<?php echo h($member['Member']['task_count']); ?>
+			&nbsp;
+		</td>
+</tr>
 				</tbody>
 			</table>
 
@@ -85,6 +92,7 @@
 		<th><?php echo __('Description'); ?></th>
 		<th><?php echo __('Deadline'); ?></th>
 		<th><?php echo __('Member Id'); ?></th>
+		<th><?php echo __('Project Id'); ?></th>
 		<th class="actions"></th>
 	</tr>
 	<thead>
@@ -96,6 +104,7 @@
 			<td><?php echo $task['description']; ?></td>
 			<td><?php echo $task['deadline']; ?></td>
 			<td><?php echo $task['member_id']; ?></td>
+			<td><?php echo $task['project_id']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>'), array('controller' => 'tasks', 'action' => 'view', $task['id']), array('escape' => false)); ?>
 				<?php echo $this->Html->link(__('<span class="glyphicon glyphicon-edit"></span>'), array('controller' => 'tasks', 'action' => 'edit', $task['id']), array('escape' => false)); ?>

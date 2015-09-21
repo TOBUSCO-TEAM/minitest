@@ -22,10 +22,31 @@ class TasksController extends AppController {
      *
      * @return void
      */
+    
+    public function beforeFilter() { 
+        parent::beforeFilter(); 
+        
+        
+// Allow users to register and logout. 
+            
+        $this->Auth->allow('add','edit','view','delete');
+    
+        
+    
+    
+    }
+    
+
+    
     public function index() {
         $this->Task->recursive = 0;
-        $this->set('tasks', $this->Paginator->paginate());
-    }
+        if($this->Auth->user('role_id')=='2'){
+        $this->set('tasks', $this->Paginator->paginate('Task', array('Task.member_id ' => $this->Auth->user('member_id'))));
+        }else{
+            $this->set('tasks', $this->Paginator->paginate());
+        }
+        
+        }
 
     /**
      * view method
@@ -59,6 +80,9 @@ class TasksController extends AppController {
         }
         $members = $this->Task->Member->find('list');
         $this->set(compact('members'));
+        
+        $projects = $this->Task->Project->find('list');
+        $this->set(compact('projects'));
     }
 
     /**
@@ -85,6 +109,11 @@ class TasksController extends AppController {
         }
         $members = $this->Task->Member->find('list');
         $this->set(compact('members'));
+        
+        $projects = $this->Task->Project->find('list');
+        $this->set(compact('projects'));
+        
+        
     }
 
     /**
@@ -207,4 +236,5 @@ class TasksController extends AppController {
 )));
 
 }
+
 }

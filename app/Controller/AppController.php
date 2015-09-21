@@ -22,7 +22,7 @@
 App::uses('Controller', 'Controller');
 
 /**
- * Application Controller
+ * Applica-tion Controller
  *
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
@@ -31,7 +31,62 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    public function beforeFilter(){
-		$this->layout = 'bootstrap';
+    public $components = array(
+		'Auth',
+		'Session','Acl'
+		);
+
+	public $helpers = array(
+		'Session',
+		'Form'
+		);
+   
+
+    public function beforeFilter() { 
+        $this->layout = 'bootstrap';
+        	$this->Auth->authenticate = array(
+			AuthComponent::ALL =>array(
+				'UserModel'=>'User',
+				'fields'=>array(
+					'username'=>'username',
+					'password'=>'password'
+					)
+				),
+			'Form',
+			);
+
+		$this->Auth->authorize = "Controller";
+
+		$this->Auth->loginAction = array(
+			'plugin'=>null,
+			'controller'=>'users',
+			'action'=>'login'
+			);
+
+		$this->Auth->logoutRedirect = array(
+			'plugin'=>null,
+			'controller'=>'users',
+			'action'=>'login'
+			);
+
+		$this->Auth->loginRedirect = array(
+			'plugin'=>null,
+			'controller'=>'tasks',
+			'action'=>'index'
+			);
+
+		$this->Auth->error=__('Erro , você não logou!');
+
+		$this->Auth->allowedActions = array('add','resetpassword','login');
+
+       
+}
+public function isAuthorized($user=null)
+	{
+//		if(!empty($this->request->params['admin'])) {
+//			return $user['role_id'] == 2;
+//		}
+//		return !empty($user);
+        return true;
 	}
 }

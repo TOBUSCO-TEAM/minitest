@@ -17,7 +17,7 @@
  */
 
 App::uses('DataSource', 'Model/Datasource');
-App::uses('CakeText', 'Utility');
+App::uses('String', 'Utility');
 App::uses('View', 'View');
 
 /**
@@ -181,7 +181,7 @@ class DboSource extends DataSource {
  *
  * @var array
  */
-	protected $_sqlOps = array('like', 'ilike', 'rlike', 'or', 'not', 'in', 'between', 'regexp', 'similar to');
+	protected $_sqlOps = array('like', 'ilike', 'or', 'not', 'in', 'between', 'regexp', 'similar to');
 
 /**
  * Indicates the level of nested transactions
@@ -312,10 +312,9 @@ class DboSource extends DataSource {
  *
  * @param string $data String to be prepared for use in an SQL statement
  * @param string $column The column datatype into which this data will be inserted.
- * @param bool $null Column allows NULL values
  * @return string Quoted and escaped data
  */
-	public function value($data, $column = null, $null = true) {
+	public function value($data, $column = null) {
 		if (is_array($data) && !empty($data)) {
 			return array_map(
 				array(&$this, 'value'),
@@ -349,16 +348,14 @@ class DboSource extends DataSource {
 				return $this->_connection->quote($data, PDO::PARAM_STR);
 			default:
 				if ($data === '') {
-					return $null ? 'NULL' : '""';
+					return 'NULL';
 				}
 				if (is_float($data)) {
 					return str_replace(',', '.', strval($data));
 				}
 				if ((is_int($data) || $data === '0') || (
-					is_numeric($data) &&
-					strpos($data, ',') === false &&
-					$data[0] != '0' &&
-					strpos($data, 'e') === false)
+					is_numeric($data) && strpos($data, ',') === false &&
+					$data[0] != '0' && strpos($data, 'e') === false)
 				) {
 					return $data;
 				}
@@ -399,11 +396,11 @@ class DboSource extends DataSource {
  *
  * @param string $sql SQL statement
  * @param array $params Additional options for the query.
- * @return mixed Resource or object representing the result set, or false on failure
+ * @return bool
  */
 	public function rawQuery($sql, $params = array()) {
 		$this->took = $this->numRows = false;
-		return $this->execute($sql, array(), $params);
+		return $this->execute($sql, $params);
 	}
 
 /**
@@ -779,7 +776,7 @@ class DboSource extends DataSource {
 			return $value;
 		}
 		if (!$this->_methodCacheChange && empty(self::$methodCache)) {
-			self::$methodCache = (array)Cache::read('method_cache', '_cake_core_');
+			self::$methodCache = Cache::read('method_cache', '_cake_core_');
 		}
 		if ($value === null) {
 			return (isset(self::$methodCache[$method][$key])) ? self::$methodCache[$method][$key] : null;
@@ -837,7 +834,9 @@ class DboSource extends DataSource {
 				$matches[1] . '(' . $this->name($matches[2]) . ')'
 			);
 		}
-		if (preg_match('/^([\w-]+(\.[\w-]+|\(.*\))*)\s+' . preg_quote($this->alias) . '\s*([\w-]+)$/i', $data, $matches)) {
+		if (
+			preg_match('/^([\w-]+(\.[\w-]+|\(.*\))*)\s+' . preg_quote($this->alias) . '\s*([\w-]+)$/i', $data, $matches
+		)) {
 			return $this->cacheMethod(
 				__FUNCTION__, $cacheKey,
 				preg_replace(
@@ -997,8 +996,7 @@ class DboSource extends DataSource {
 		$count = count($fields);
 
 		for ($i = 0; $i < $count; $i++) {
-			$schema = $Model->schema();
-			$valueInsert[] = $this->value($values[$i], $Model->getColumnType($fields[$i]), isset($schema[$fields[$i]]) ? $schema[$fields[$i]]['null'] : true);
+			$valueInsert[] = $this->value($values[$i], $Model->getColumnType($fields[$i]));
 			$fieldInsert[] = $this->name($fields[$i]);
 			if ($fields[$i] === $Model->primaryKey) {
 				$id = $values[$i];
@@ -1203,30 +1201,6 @@ class DboSource extends DataSource {
 	}
 
 /**
- * Passes association results through afterFind filters of the corresponding model.
- *
- * Similar to DboSource::_filterResults(), but this filters only specified models.
- * The primary model can not be specified, because this call DboSource::_filterResults() internally.
- *
- * @param array &$resultSet Reference of resultset to be filtered.
- * @param Model $Model Instance of model to operate against.
- * @param array $toBeFiltered List of classes to be filtered.
- * @return array Array of results that have been filtered through $Model->afterFind.
- */
-	protected function _filterResultsInclusive(&$resultSet, Model $Model, $toBeFiltered = array()) {
-		$exclude = array();
-
-		if (is_array($resultSet)) {
-			$current = reset($resultSet);
-			if (is_array($current)) {
-				$exclude = array_diff(array_keys($current), $toBeFiltered);
-			}
-		}
-
-		return $this->_filterResults($resultSet, $Model, $exclude);
-	}
-
-/**
  * Queries associations.
  *
  * Used to fetch results on recursive models.
@@ -1297,7 +1271,7 @@ class DboSource extends DataSource {
 
 			// Filter
 			if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
-				$this->_filterResultsInclusive($assocResultSet, $Model, array($association));
+				$this->_filterResults($assocResultSet, $Model);
 			}
 
 			// Merge
@@ -1326,7 +1300,7 @@ class DboSource extends DataSource {
 
 			// Filter
 			if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
-				$this->_filterResultsInclusive($assocResultSet, $Model, array($association, $with));
+				$this->_filterResults($assocResultSet, $Model);
 			}
 		}
 
@@ -1339,7 +1313,8 @@ class DboSource extends DataSource {
 				$assocResultSet = array();
 				$prefetched = false;
 
-				if (($type === 'hasOne' || $type === 'belongsTo') &&
+				if (
+					($type === 'hasOne' || $type === 'belongsTo') &&
 					isset($row[$LinkModel->alias], $joined[$Model->alias]) &&
 					in_array($LinkModel->alias, $joined[$Model->alias])
 				) {
@@ -1362,7 +1337,8 @@ class DboSource extends DataSource {
 						foreach ($LinkModel->{$type1} as $assoc1 => $assocData1) {
 							$DeepModel = $LinkModel->{$assoc1};
 
-							if ($type1 === 'belongsTo' ||
+							if (
+								$type1 === 'belongsTo' ||
 								($type === 'belongsTo' && $DeepModel->alias === $modelAlias) ||
 								($DeepModel->alias !== $modelAlias)
 							) {
@@ -1394,15 +1370,10 @@ class DboSource extends DataSource {
 						$this->_mergeAssociation($row, $merge, $association, $type);
 					}
 				} else {
-					if (!$prefetched && $LinkModel->useConsistentAfterFind) {
-						if ($queryData['callbacks'] === true || $queryData['callbacks'] === 'after') {
-							$this->_filterResultsInclusive($assocResultSet, $Model, array($association));
-						}
-					}
 					$this->_mergeAssociation($row, $assocResultSet, $association, $type, $selfJoin);
 				}
 
-				if ($type !== 'hasAndBelongsToMany' && isset($row[$association]) && !$prefetched && !$LinkModel->useConsistentAfterFind) {
+				if ($type !== 'hasAndBelongsToMany' && isset($row[$association]) && !$prefetched) {
 					$row[$association] = $LinkModel->afterFind($row[$association], false);
 				}
 
@@ -1439,10 +1410,11 @@ class DboSource extends DataSource {
 	protected function _fetchHasMany(Model $Model, $query, $ids) {
 		$ids = array_unique($ids);
 
-		if (count($ids) > 1) {
-			$query = str_replace('= ({$__cakeID__$}', 'IN ({$__cakeID__$}', $query);
-		}
 		$query = str_replace('{$__cakeID__$}', implode(', ', $ids), $query);
+		if (count($ids) > 1) {
+			$query = str_replace('= (', 'IN (', $query);
+		}
+
 		return $this->fetchAll($query, $Model->cacheQueries);
 	}
 
@@ -1618,7 +1590,8 @@ class DboSource extends DataSource {
 			$assocFields = $this->fields($Model, null, "{$Model->alias}.{$Model->primaryKey}");
 			$passedFields = $queryData['fields'];
 
-			if (count($passedFields) > 1 ||
+			if (
+				count($passedFields) > 1 ||
 				(strpos($passedFields[0], $assocFields[0]) === false && !preg_match('/^[a-z]+\(/i', $passedFields[0]))
 			) {
 				$queryData['fields'] = array_merge($passedFields, $assocFields);
@@ -2065,7 +2038,6 @@ class DboSource extends DataSource {
  */
 	protected function _prepareUpdateFields(Model $Model, $fields, $quoteValues = true, $alias = false) {
 		$quotedAlias = $this->startQuote . $Model->alias . $this->endQuote;
-		$schema = $Model->schema();
 
 		$updates = array();
 		foreach ($fields as $field => $value) {
@@ -2086,7 +2058,7 @@ class DboSource extends DataSource {
 			$update = $quoted . ' = ';
 
 			if ($quoteValues) {
-				$update .= $this->value($value, $Model->getColumnType($field), isset($schema[$field]) ? $schema[$field]['null'] : true);
+				$update .= $this->value($value, $Model->getColumnType($field));
 			} elseif ($Model->getColumnType($field) === 'boolean' && (is_int($value) || is_bool($value))) {
 				$update .= $this->boolean($value, true);
 			} elseif (!$alias) {
@@ -2518,7 +2490,7 @@ class DboSource extends DataSource {
 		if ($allFields) {
 			$fields = array_keys($Model->schema());
 		} elseif (!is_array($fields)) {
-			$fields = CakeText::tokenize($fields);
+			$fields = String::tokenize($fields);
 		}
 		$fields = array_values(array_filter($fields));
 		$allFields = $allFields || in_array('*', $fields) || in_array($Model->alias . '.*', $fields);
@@ -2771,11 +2743,10 @@ class DboSource extends DataSource {
 		$operatorMatch .= ')\\x20?)|<[>=]?(?![^>]+>)\\x20?|[>=!]{1,3}(?!<)\\x20?)/is';
 		$bound = (strpos($key, '?') !== false || (is_array($value) && strpos($key, ':') !== false));
 
-		$key = trim($key);
 		if (strpos($key, ' ') === false) {
 			$operator = '=';
 		} else {
-			list($key, $operator) = explode(' ', $key, 2);
+			list($key, $operator) = explode(' ', trim($key), 2);
 
 			if (!preg_match($operatorMatch, trim($operator)) && strpos($operator, ' ') !== false) {
 				$key = $key . ' ' . $operator;
@@ -2818,7 +2789,7 @@ class DboSource extends DataSource {
 		}
 
 		if ($bound) {
-			return CakeText::insert($key . ' ' . trim($operator), $value);
+			return String::insert($key . ' ' . trim($operator), $value);
 		}
 
 		if (!preg_match($operatorMatch, trim($operator))) {
@@ -2872,17 +2843,10 @@ class DboSource extends DataSource {
 		if (!empty($this->endQuote)) {
 			$end = preg_quote($this->endQuote);
 		}
-		// Remove quotes and requote all the Model.field names.
 		$conditions = str_replace(array($start, $end), '', $conditions);
 		$conditions = preg_replace_callback(
 			'/(?:[\'\"][^\'\"\\\]*(?:\\\.[^\'\"\\\]*)*[\'\"])|([a-z0-9_][a-z0-9\\-_]*\\.[a-z0-9_][a-z0-9_\\-]*)/i',
 			array(&$this, '_quoteMatchedField'),
-			$conditions
-		);
-		// Quote `table_name AS Alias`
-		$conditions = preg_replace(
-			'/(\s[a-z0-9\\-_.' . $start . $end . ']*' . $end . ')\s+AS\s+([a-z0-9\\-_]+)/i',
-			'\1 AS ' . $this->startQuote . '\2' . $this->endQuote,
 			$conditions
 		);
 		if ($conditions !== null) {
@@ -3084,7 +3048,7 @@ class DboSource extends DataSource {
 				list($col, $limit) = explode('(', $col);
 			}
 			if ($limit !== null) {
-				return (int)$limit;
+				return intval($limit);
 			}
 			return null;
 		}
@@ -3125,7 +3089,7 @@ class DboSource extends DataSource {
 				}
 			}
 		}
-		return (int)$length;
+		return intval($length);
 	}
 
 /**
@@ -3492,10 +3456,10 @@ class DboSource extends DataSource {
 			if (is_bool($value)) {
 				return 'boolean';
 			}
-			if (is_float($value) && (float)$value === $value) {
+			if (is_float($value) && floatval($value) === $value) {
 				return 'float';
 			}
-			if (is_int($value) && (int)$value === $value) {
+			if (is_int($value) && intval($value) === $value) {
 				return 'integer';
 			}
 			if (is_string($value) && strlen($value) > 255) {
@@ -3573,7 +3537,6 @@ class DboSource extends DataSource {
 		if ($this->_methodCacheChange) {
 			Cache::write('method_cache', self::$methodCache, '_cake_core_');
 		}
-		parent::__destruct();
 	}
 
 }

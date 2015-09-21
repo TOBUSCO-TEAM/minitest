@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
 	<?php
+                echo $this->Html->css('navbarsession');
 		echo $this->Html->meta('icon');
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -37,8 +38,8 @@
 
   <body>
 
-    <?php echo $this->Element('navigation'); ?>
-
+    <?php // echo $this->Element('navigation'); ?>
+    <?php echo $this->Element('navsession'); ?>
     <div class="container">
 
 			<?php echo $this->Session->flash(); ?>

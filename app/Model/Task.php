@@ -61,6 +61,14 @@ class Task extends AppModel {
 			'fields' => '',
 			'order' => '',
                         'counterCache' => true
-		)
+		),
+            'Project'=>array(
+                'className' => 'Project',
+			'foreignKey' => 'project_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+                        'counterCache' => true
+            )
 	);
 }

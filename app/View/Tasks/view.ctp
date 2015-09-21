@@ -65,6 +65,13 @@
 			&nbsp;
 		</td>
 </tr>
+<tr>
+		<th><?php echo __('Project Id'); ?></th>
+		<td>
+			<?php echo h($task['Task']['project_id']); ?>
+			&nbsp;
+		</td>
+</tr>
 				</tbody>
 			</table>
 

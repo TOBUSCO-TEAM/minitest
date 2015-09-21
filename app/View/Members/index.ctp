@@ -36,6 +36,7 @@
 						<th><?php echo $this->Paginator->sort('function'); ?></th>
 						<th><?php echo $this->Paginator->sort('username'); ?></th>
 						<th><?php echo $this->Paginator->sort('password'); ?></th>
+						<th><?php echo $this->Paginator->sort('task_count'); ?></th>
 						<th class="actions"></th>
 					</tr>
 				</thead>
@@ -47,6 +48,7 @@
 						<td><?php echo h($member['Member']['function']); ?>&nbsp;</td>
 						<td><?php echo h($member['Member']['username']); ?>&nbsp;</td>
 						<td><?php echo h($member['Member']['password']); ?>&nbsp;</td>
+						<td><?php echo h($member['Member']['task_count']); ?>&nbsp;</td>
 						<td class="actions">
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $member['Member']['id']), array('escape' => false)); ?>
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-edit"></span>', array('action' => 'edit', $member['Member']['id']), array('escape' => false)); ?>

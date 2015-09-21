@@ -91,7 +91,7 @@ class ServerShell extends AppShell {
 			$this->_documentRoot = $this->params['document_root'];
 		}
 
-		// for Windows
+		// for windows
 		if (substr($this->_documentRoot, -1, 1) === DIRECTORY_SEPARATOR) {
 			$this->_documentRoot = substr($this->_documentRoot, 0, strlen($this->_documentRoot) - 1);
 		}

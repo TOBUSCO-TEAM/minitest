@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Member Model
  *
  * @property Task $Task
+ * @property User $User
  */
 class Member extends AppModel {
 
@@ -12,7 +13,6 @@ class Member extends AppModel {
  *
  * @var array
  */
-        public $actsAs = array('Containable');
 	public $validate = array(
 		'name' => array(
 			'notBlank' => array(
@@ -76,7 +76,22 @@ class Member extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'member_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
+        
+        
 
 }
