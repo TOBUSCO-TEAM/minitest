@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 20-Set-2015 às 18:51
+-- Generation Time: 22-Set-2015 às 08:59
 -- Versão do servidor: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -44,8 +44,8 @@ INSERT INTO `members` (`id`, `name`, `function`, `username`, `password`, `task_c
 (1, 'Celso', 'Programador', 'kaze94phoenix', '27b4cb63', 3),
 (2, 'Aminissa', 'Administadora de Base de Dados', 'amysupeta', 'dmi2015', 2),
 (3, 'Frenque', 'Web Designer', 'flowzzy', 'dmi2015', 2),
-(4, 'Sheila', 'asdasd', 'sheyla', '588ba4b683a4ea1edf1c6b755c040c60c3cb6e74', 1),
-(5, 'Osvaldo', 'Programador', 'osvaldoM', 'dmi2015', NULL),
+(4, 'Sheila', 'Programador', 'sheyla', 'dmi2015', 1),
+(5, 'Osvaldo', 'Programador', 'osvaldoM', 'dmi2015', 0),
 (6, 'adadw', 'awdawdaw', 'awdawdwad', 'asdawdaw', NULL);
 
 -- --------------------------------------------------------
@@ -68,6 +68,27 @@ CREATE TABLE IF NOT EXISTS `projects` (
 INSERT INTO `projects` (`id`, `designacao`, `descricao`) VALUES
 (1, 'MutiTalentos', 'Jovens Programadores do ensino universitario'),
 (2, 'GDG', 'Desenvolvedores da google');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `roles`
+--
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `created` timestamp NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created`) VALUES
+(1, 'Admin', '2015-09-21 06:19:50'),
+(2, 'Regular', '2015-09-21 06:20:01');
 
 -- --------------------------------------------------------
 
@@ -97,7 +118,7 @@ INSERT INTO `tasks` (`id`, `title`, `description`, `deadline`, `member_id`, `pro
 (4, 'asdad', 'asdawdwd', '2015-01-07', 3, 0),
 (5, 'sadasdasda', 'asdadsa', '2015-09-08', 2, 0),
 (6, 'wewadasdasd', 'asdsadas', '2015-09-08', 3, 0),
-(7, 'ldasdaasda', 'asasdasd', '2015-09-10', 4, 1),
+(7, 'ldasdaasda', 'asasdasd', '2015-09-10', 4, 2),
 (8, 'adadw', 'asdawdawd', '2015-09-11', 1, 0);
 
 -- --------------------------------------------------------
@@ -111,20 +132,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `member_id` int(11) NOT NULL,
-  `role` varchar(100) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `image` blob NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `member_id` (`member_id`)
+  KEY `member_id` (`member_id`),
+  KEY `role_id` (`role_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `member_id`, `role`) VALUES
-(32, 'kaze', '588ba4b683a4ea1edf1c6b755c040c60c3cb6e74', 1, 'admin'),
-(33, 'asd', '0a5aed2314dfe5f7d66e42454471eefe8743db6f', 2, 'admin'),
-(35, 'sas', '0a5aed2314dfe5f7d66e42454471eefe8743db6f', 2, 'admin'),
-(37, 'sheyla', 'd40b3d0f5895ff43563b4b29912c6ab8efd8fed6', 4, 'normal');
+INSERT INTO `users` (`id`, `username`, `password`, `member_id`, `role_id`, `image`) VALUES
+(32, 'kaze', '588ba4b683a4ea1edf1c6b755c040c60c3cb6e74', 1, 1, 0x3339353133315f31303135313933393330383235323133375f3835303938323235325f6e2e6a7067),
+(33, 'asd', '0a5aed2314dfe5f7d66e42454471eefe8743db6f', 2, 0, ''),
+(35, 'sas', '0a5aed2314dfe5f7d66e42454471eefe8743db6f', 2, 0, ''),
+(37, 'sheyla', 'd40b3d0f5895ff43563b4b29912c6ab8efd8fed6', 4, 2, 0x31313730373631355f3933383036353938393630303432355f383430303131333537333639353439333837345f6e2e6a7067);
 
 --
 -- Constraints for dumped tables

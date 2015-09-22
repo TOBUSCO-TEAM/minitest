@@ -15,17 +15,22 @@ class UsersController extends AppController {
  */
 	public $components = array('Paginator');
 
-         public function beforeFilter() { 
+/**
+ * index method
+ *
+ * @return void
+ */
+ 
+ public function beforeFilter() { 
             parent::beforeFilter(); 
 // Allow users to register and logout. 
-$this->Auth->allow('add','edit','logout'); 
+// $this->Auth->allow('add','edit','logout'); 
         }
 public function login()
 {
 	$this->layout = 'login';
 	if($this->request->is('post')) {
 		if($this->Auth->login()) {
-
 			return $this->redirect($this->Auth->loginRedirect);
 		}
 		$this->Session->setFlash('Invalid login data!');
@@ -38,15 +43,10 @@ public function logout()
 	
 	return $this->redirect($this->Auth->logoutRedirect);
 }
-/**
- * index method
- *
- * @return void
- */
+ 
 	public function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->Paginator->paginate());
-               
 	}
 
 /**
@@ -80,10 +80,8 @@ public function logout()
 			}
 		}
 		$members = $this->User->Member->find('list');
-		$this->set(compact('members'));
-                
-                $roles = $this->User->Role->find('list');
-		$this->set(compact('roles'));
+		$roles = $this->User->Role->find('list');
+		$this->set(compact('members', 'roles'));
 	}
 
 /**
@@ -109,10 +107,8 @@ public function logout()
 			$this->request->data = $this->User->find('first', $options);
 		}
 		$members = $this->User->Member->find('list');
-		$this->set(compact('members'));
-                
-                $roles = $this->User->Role->find('list');
-		$this->set(compact('roles'));
+		$roles = $this->User->Role->find('list');
+		$this->set(compact('members', 'roles'));
 	}
 
 /**

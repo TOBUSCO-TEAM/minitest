@@ -38,8 +38,8 @@
                                         </p>
                                     </div>
                                     <div class="col-lg-8">
-                                        <p class="text-left"><strong>Nombre Apellido</strong></p>
-                                        <p class="text-left small">correoElectronico@email.com</p>
+                                        <p class="text-left"><strong><?php echo $this->Session->read('Auth.User.Member.name') ?></strong></p>
+                                        <p class="text-left small"><?php echo $this->Session->read('Auth.User.Member.function') ?></p>
                                         <p class="text-left">
                                             <a href="#" class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
                                         </p>

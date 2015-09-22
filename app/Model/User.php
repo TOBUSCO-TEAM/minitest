@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * User Model
  *
  * @property Member $Member
+ * @property Role $Role
  */
 class User extends AppModel {
 
@@ -14,8 +15,8 @@ class User extends AppModel {
  */
 	public $validate = array(
 		'username' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -24,8 +25,8 @@ class User extends AppModel {
 			),
 		),
 		'password' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -43,9 +44,9 @@ class User extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'role' => array(
-			'notBlank' => array(
-				'rule' => array('notBlank'),
+		'role_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -70,7 +71,7 @@ class User extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-            'Role' => array(
+		'Role' => array(
 			'className' => 'Role',
 			'foreignKey' => 'role_id',
 			'conditions' => '',
@@ -78,7 +79,8 @@ class User extends AppModel {
 			'order' => ''
 		)
 	);
-         public function beforeSave($options = array())
+	
+	public function beforeSave($options = array())
 	{
 		if(!empty($this->data['User']['password'])) {
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);

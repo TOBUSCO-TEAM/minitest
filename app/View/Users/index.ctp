@@ -13,7 +13,6 @@
 	<div class="row">
 
 		<div class="col-md-3">
-                    
 			<div class="actions">
 				<div class="panel panel-default">
 					<div class="panel-heading">Actions</div>
@@ -22,6 +21,8 @@
 								<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New User'), array('action' => 'add'), array('escape' => false)); ?></li>
 								<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Members'), array('controller' => 'members', 'action' => 'index'), array('escape' => false)); ?> </li>
 		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Member'), array('controller' => 'members', 'action' => 'add'), array('escape' => false)); ?> </li>
+		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Roles'), array('controller' => 'roles', 'action' => 'index'), array('escape' => false)); ?> </li>
+		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Role'), array('controller' => 'roles', 'action' => 'add'), array('escape' => false)); ?> </li>
 							</ul>
 						</div><!-- end body -->
 				</div><!-- end panel -->
@@ -29,7 +30,6 @@
 		</div><!-- end col md 3 -->
 
 		<div class="col-md-9">
-                    
 			<table cellpadding="0" cellspacing="0" class="table table-striped">
 				<thead>
 					<tr>
@@ -37,7 +37,8 @@
 						<th><?php echo $this->Paginator->sort('username'); ?></th>
 						<th><?php echo $this->Paginator->sort('password'); ?></th>
 						<th><?php echo $this->Paginator->sort('member_id'); ?></th>
-						<th><?php echo $this->Paginator->sort('role'); ?></th>
+						<th><?php echo $this->Paginator->sort('role_id'); ?></th>
+						<th><?php echo $this->Paginator->sort('image'); ?></th>
 						<th class="actions"></th>
 					</tr>
 				</thead>
@@ -50,9 +51,10 @@
 								<td>
 			<?php echo $this->Html->link($user['Member']['name'], array('controller' => 'members', 'action' => 'view', $user['Member']['id'])); ?>
 		</td>
-                <td>
+								<td>
 			<?php echo $this->Html->link($user['Role']['name'], array('controller' => 'roles', 'action' => 'view', $user['Role']['id'])); ?>
 		</td>
+						<td><?php echo h($user['User']['image']); ?>&nbsp;</td>
 						<td class="actions">
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $user['User']['id']), array('escape' => false)); ?>
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-edit"></span>', array('action' => 'edit', $user['User']['id']), array('escape' => false)); ?>

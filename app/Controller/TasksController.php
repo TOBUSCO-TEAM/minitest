@@ -29,7 +29,7 @@ class TasksController extends AppController {
         
 // Allow users to register and logout. 
             
-        $this->Auth->allow('add','edit','view','delete');
+       // $this->Auth->allow('add','edit','view','delete');
     
         
     

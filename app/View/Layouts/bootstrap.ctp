@@ -42,7 +42,7 @@
     <?php echo $this->Element('navsession'); ?>
     <div class="container">
 
-			<?php echo $this->Session->flash(); ?>
+			<?php echo $this->Session->flash('auth'); ?>
 
 			<?php echo $this->fetch('content'); ?>
 

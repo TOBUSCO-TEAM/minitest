@@ -75,18 +75,22 @@ class AppController extends Controller {
 			'action'=>'index'
 			);
 
-		$this->Auth->error=__('Erro , você não logou!');
+		$this->Auth->error=__('Erro , nao estas permitido a aceder este recurso');
 
-		$this->Auth->allowedActions = array('add','resetpassword','login');
+		$this->Auth->allowedActions = array('resetpassword','login');
 
        
 }
 public function isAuthorized($user=null)
 	{
-//		if(!empty($this->request->params['admin'])) {
-//			return $user['role_id'] == 2;
-//		}
-//		return !empty($user);
-        return true;
+// verifica o recurso solicitado
+    $aco = 'controllers/'.$this->params['controller'];
+
+    //Informando qual é meu grupo
+    $aro = $this->Auth->user('role_id');
+        
+    //Retornando a validação do privilégio solicitante - recurso/privilegio
+    return $this->Acl->check($aro, $aco, $this->params['action']);
+ //     return true;
 	}
 }

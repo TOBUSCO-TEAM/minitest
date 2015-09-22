@@ -232,8 +232,9 @@
  * The class name and database used in CakePHP's
  * access control lists.
  */
-	Configure::write('Acl.classname', 'DbAcl');
-	Configure::write('Acl.database', 'default');
+ //	Configure::write('Acl.classname', 'DbAcl');
+	Configure::write('Acl.classname', 'PhpAcl');
+//	Configure::write('Acl.database', 'default');
 
 /**
  * Uncomment this line and correct your server timezone to fix

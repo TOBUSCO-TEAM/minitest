@@ -22,6 +22,8 @@
 																<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Users'), array('action' => 'index'), array('escape' => false)); ?></li>
 									<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Members'), array('controller' => 'members', 'action' => 'index'), array('escape' => false)); ?> </li>
 		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Member'), array('controller' => 'members', 'action' => 'add'), array('escape' => false)); ?> </li>
+		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Roles'), array('controller' => 'roles', 'action' => 'index'), array('escape' => false)); ?> </li>
+		<li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Role'), array('controller' => 'roles', 'action' => 'add'), array('escape' => false)); ?> </li>
 							</ul>
 						</div>
 					</div>
@@ -43,7 +45,10 @@
 					<?php echo $this->Form->input('member_id', array('class' => 'form-control', 'placeholder' => 'Member Id'));?>
 				</div>
 				<div class="form-group">
-					<?php echo $this->Form->input('role_id', array('class' => 'form-control', 'placeholder' => 'Role'));?>
+					<?php echo $this->Form->input('role_id', array('class' => 'form-control', 'placeholder' => 'Role Id'));?>
+				</div>
+				<div class="form-group">
+					<?php echo $this->Form->input('image', array('class' => 'form-control', 'placeholder' => 'Image'));?>
 				</div>
 				<div class="form-group">
 					<?php echo $this->Form->submit(__('Submit'), array('class' => 'btn btn-default')); ?>

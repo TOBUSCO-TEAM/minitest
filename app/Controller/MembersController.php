@@ -24,7 +24,11 @@ class MembersController extends AppController {
      *
      * @return void
      */
-    
+   public function beforeFilter() { 
+            parent::beforeFilter(); 
+// Allow users to register and logout. 
+$this->Auth->allow('view','index'); 
+        } 
      
     
     public function index() {
@@ -147,13 +151,15 @@ class MembersController extends AppController {
 
         $query = $this->request->data['Member']['opcoes']; //parametro do select
         $query1 = $this->request->data['Member']['buscador'];// parametro do campo de texto
-        
         if($query==0){      
         $conditions = array(
             'conditions' => array(
                 'AND' => array(
-                  //  'Member.task_count <=3', //Nota: campo adicionado na base de dados para uso do counterCache
-                    //'Member.function LIKE'=>"%$query1%"
+                    'OR'=>array(
+                        'Member.task_count'=>0,
+                        'Member.task_count is null',),
+                     //Nota: campo adicionado na base de dados para uso do counterCache
+                    'Member.function LIKE'=>"%$query1%"
                 )
                  
             )
