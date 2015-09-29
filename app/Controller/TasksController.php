@@ -39,9 +39,9 @@ class TasksController extends AppController {
 
     
     public function index() {
-        $this->Task->recursive = 0;
+         $this->Task->recursive = 0;
         if($this->Auth->user('role_id')=='2'){
-        $this->set('tasks', $this->Paginator->paginate('Task', array('Task.member_id ' => $this->Auth->user('member_id'))));
+        $this->set('tasks', $this->Paginator->paginate('Task',array('Task.member_id ' => $this->Auth->user('member_id'))));
         }else{
             $this->set('tasks', $this->Paginator->paginate());
         }
@@ -69,9 +69,13 @@ class TasksController extends AppController {
      * @return void
      */
     public function add() {
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+            {
+           // $dados=array("title"=>"sdsdsdsd","description"=>"dd","deadline"=>"2015-01-01");
+                
             $this->Task->create();
-            if ($this->Task->save($this->request->data)) {
+            $flag=$this->Task->save($this->request->data);
+            if ($flag) {
                 $this->Session->setFlash(__('The task has been saved.'), 'default', array('class' => 'alert alert-success'));
                 return $this->redirect(array('action' => 'index'));
             } else {

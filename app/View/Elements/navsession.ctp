@@ -41,7 +41,7 @@
                                         <p class="text-left"><strong><?php echo $this->Session->read('Auth.User.Member.name') ?></strong></p>
                                         <p class="text-left small"><?php echo $this->Session->read('Auth.User.Member.function') ?></p>
                                         <p class="text-left">
-                                            <a href="#" class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
+                                            <?php echo $this->Html->link('Actualizar Dados', array('controller' => 'members', 'action' => 'edit', $this->Session->read('Auth.User.'))); ?>
                                         </p>
                                     </div>
                                 </div>
