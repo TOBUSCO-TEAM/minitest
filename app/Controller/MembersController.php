@@ -33,7 +33,9 @@ $this->Auth->allow('view','index');
     
     public function index() {
         $this->Member->recursive = 0;
-        $this->set('members', $this->Member->find('all', array('order' => array('Member.name' => 'asc'))));//lista os membros de forma ascendente de nomes
+        //$this->set('members', $this->Member->find('all', array('order' => array('Member.name' => 'asc'))));//lista os membros de forma ascendente de nomes
+        $this->set('members', $this->Paginator->paginate());
+        
     }
 
     /**
