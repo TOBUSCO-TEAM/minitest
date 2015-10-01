@@ -115,7 +115,7 @@ $this->Auth->allow('view','index');
         return $this->redirect(array('action' => 'index'));
     }
 
-    public function viewnrtasks($id = null) {/// metodo para buscar nr de tarefas por membro com recurso a propriedade counterCache(vide tabela Task)
+    public function viewnrtasks($id = null) {/// metodo para buscar nr de tarefas por membro com recurso a propriedade counterCache(vide tabela e modelo Task)
       $this->set('members', $this->Member->find('all'));
       
       
@@ -184,6 +184,12 @@ $this->Auth->allow('view','index');
         $this->set('result', $result);
 //debug($this->data);
     }
+	  public function nomeasc() {
+	
+        // $conditions = ;
+         $membros = $this->Membro->find('all', array('order'=> array('Membro.nome' => 'asc')));
+		$this->set('membros', $membros);
+	}
     
 
 

@@ -1,6 +1,6 @@
 <?php
 echo $this->Form->create(array('controller' => 'tasks', 'action' => 'searchmembertasks', 'type' => 'post'));
-echo $this->Form->input('buscador', array('placeholder' => 'insirt members id', 'label' => false));
+echo $this->Form->input('buscador', array('placeholder' => 'insira id do membro', 'label' => false));
 echo $this->Form->end('Buscar');
 ?>
 		<div class="col-md-9">

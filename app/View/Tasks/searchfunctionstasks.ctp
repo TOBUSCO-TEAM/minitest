@@ -9,15 +9,16 @@ echo $this->Form->end('Buscar');
 					<tr>
 						<th>Title</th>
                                                 <th>Description</th>
+                                                <th>Member</th>
 					</tr>
 				</thead>
 				<tbody>
-                                    <?php print_r($result);?>
+                                    
 				<?php foreach ($result as $task): ?>
 					<tr>
 						<td><?php echo h($task['Task']['title']); ?>&nbsp;</td>
-						<td><?php echo h($task['Task']['descrption']); ?>&nbsp;</td>
-								
+						<td><?php echo h($task['Task']['description']); ?>&nbsp;</td>
+						<td><?php echo h($task['Member']['name']); ?>&nbsp;</td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
@@ -43,7 +44,7 @@ echo $this->Form->end('Buscar');
 		</div> <!-- end col md 9 -->
 	</div><!-- end row -->
 <?php
-                            print_r($tasks);
+                           
 ?>
 
 </div><!-- end containing of content -->

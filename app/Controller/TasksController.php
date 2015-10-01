@@ -22,31 +22,22 @@ class TasksController extends AppController {
      *
      * @return void
      */
-    
-    public function beforeFilter() { 
-        parent::beforeFilter(); 
-        
-        
-// Allow users to register and logout. 
-            
-       // $this->Auth->allow('add','edit','view','delete');
-    
-        
-    
-    
-    }
-    
+    public function beforeFilter() {
+        parent::beforeFilter();
 
-    
+
+// Allow users to register and logout. 
+        // $this->Auth->allow('add','edit','view','delete');
+    }
+
     public function index() {
-         $this->Task->recursive = 0;
-        if($this->Auth->user('role_id')=='2'){
-        $this->set('tasks', $this->Paginator->paginate('Task',array('Task.member_id ' => $this->Auth->user('member_id'))));
-        }else{
+        $this->Task->recursive = 0;
+        if ($this->Auth->user('role_id') == '2') {
+            $this->set('tasks', $this->Paginator->paginate('Task', array('Task.member_id ' => $this->Auth->user('member_id'))));
+        } else {
             $this->set('tasks', $this->Paginator->paginate());
         }
-        
-        }
+    }
 
     /**
      * view method
@@ -69,12 +60,11 @@ class TasksController extends AppController {
      * @return void
      */
     public function add() {
-        if ($this->request->is('post')) 
-            {
-           // $dados=array("title"=>"sdsdsdsd","description"=>"dd","deadline"=>"2015-01-01");
-                
+        if ($this->request->is('post')) {
+            // $dados=array("title"=>"sdsdsdsd","description"=>"dd","deadline"=>"2015-01-01");
+
             $this->Task->create();
-            $flag=$this->Task->save($this->request->data);
+            $flag = $this->Task->save($this->request->data);
             if ($flag) {
                 $this->Session->setFlash(__('The task has been saved.'), 'default', array('class' => 'alert alert-success'));
                 return $this->redirect(array('action' => 'index'));
@@ -84,7 +74,7 @@ class TasksController extends AppController {
         }
         $members = $this->Task->Member->find('list');
         $this->set(compact('members'));
-        
+
         $projects = $this->Task->Project->find('list');
         $this->set(compact('projects'));
     }
@@ -113,11 +103,9 @@ class TasksController extends AppController {
         }
         $members = $this->Task->Member->find('list');
         $this->set(compact('members'));
-        
+
         $projects = $this->Task->Project->find('list');
         $this->set(compact('projects'));
-        
-        
     }
 
     /**
@@ -140,8 +128,6 @@ class TasksController extends AppController {
         }
         return $this->redirect(array('action' => 'index'));
     }
-
-
 
     public function searchpertask($id = null) {
 
@@ -167,15 +153,13 @@ class TasksController extends AppController {
 //debug($this->data);
     }
 
-
     public function searchmembertasks($id = null) {// metodo para busca de tarefas 
         //$result = array();
-
         $query = $this->request->data['Task']['buscador']; // recebe o parametro de pesquisa, com Modelo=Task e input-id=buscador
 
         $conditions = array(
-            'conditions' => array( 
-                'Task.member_id LIKE' => "%$query%"
+            'conditions' => array(
+                'Task.member_id LIKE' => "$query%"
             )
         );
 
@@ -185,14 +169,13 @@ class TasksController extends AppController {
         $this->set('result', $result);
 //debug($this->data);
     }
-    
+
     public function searchperdate($id = null) { //metodo para buscar todas tarefas por data
         //$result = array();
-
         $query = $this->request->data['Task']['buscador']; // recebe o parametro de pesquisa, com Modelo=Task e input-id=buscador
 
         $conditions = array(
-            'conditions' => array( 
+            'conditions' => array(
                 'Task.deadline LIKE' => "%$query%"
             )
         );
@@ -203,42 +186,74 @@ class TasksController extends AppController {
         $this->set('result', $result);
 //debug($this->data);
     }
-    
-    public function searchfunctionstasks($id = null) {
-        //$result = array();
-        $this->loadModel('Member');
-        $query = $this->request->data['Task']['buscador']; // recebe o parametro de pesquisa, com Modelo=Task e input-id=buscador
-        
-        $conditions1 = array(
-            'conditions' => array( 
-                'Member.function LIKE' => "%$query%"
-            )
-        );
 
-        $semiresult = $this->Member->find('all', $conditions1);
-        
-        foreach ($semiresult as $member): //percorrendo membros
-            $result = $this->Task->find(//contagem de membros associados a uma tarefa
-                    'all', array(
-                'conditions' => array(
-                    'Task.member_id' => h($member['Member']['id']) //condicao de contagem
-                )
-                    )
-            );
-        endforeach;
-        $this->set('result', $result);
-//debug($this->data);
+    public function searchfunctionstasks($id = null) {// Buscar 
+        $var = $this->request->data['Task']['buscador'];
+        $this->Task->recursive = 1;
+        $this->Paginator->settings = array('conditions' => array('Member.function' => "$var"), 'limit' => 100);
+        $result = $this->Paginator->paginate('Task');
+        //$this->set('result', $this->Paginator->paginate());
+        $this->set(compact('result'));
+
+
+
+
+
     }
-    
-    public function viewnrtasks($id = null) {/// metodo para buscar nr de tarefas por membro com recurso a propriedade counterCache(vide tabela Task)
-      $this->set('result', $this->Task->find('all',array(
-    'fields' => array(
-        'Task.member_id',
-        'COUNT(Task.member_id) as conta'
-    ),
-    'group' => 'Task.member_id'
-)));
 
-}
+    public function viewnrtasks($id = null) {/// metodo para buscar nr de tarefas por member com recurso a propriedade counterCache(vide tabela Task)
+        $this->set('result', $this->Task->find('all', array(
+                    'fields' => array(
+                        'Task.member_id',
+                        'COUNT(Task.member_id) as conta'
+                    ),
+                    'group' => 'Task.member_id'
+        )));
+    }
+
+    public function getdata() {
+        $data = '2015-08-28';
+        $options = array('conditions' => array('Task.deadline' => $data));
+        $tarefas = $this->Task->find('all', $options);
+
+        $this->set('tarefas', $tarefas);
+    }
+
+    public function betweendatas() {
+        $data1 = date('2015-08-29');
+        $data2 = date('2015-12-30');
+        //$conditions =  array('conditions' => array('Task.deadline' =>array('Between',$data1,$data2)));
+        $cond = array('conditions' => array('Task.deadline >= ' => $data1, 'Task.deadline <= ' => $data2));
+
+        $this->Paginator->settings = array('conditions' => array('Task.deadline >= ' => $data1, 'Task.deadline <= ' => $data2), 'limit' => 16, 'order' => 'Task.id DESC');
+        $tarefas = $this->Paginator->paginate('Task');
+        $this->set(compact('tarefas'));
+
+        // $tarefas = $this->Task->find('all', $cond);
+        //   $this->set('tarefas', $tarefas);
+    }
+
+    public function memberbetweendatas($id = null) {
+        $data1 = date('2015-08-28');
+        $data2 = date('2015-12-30');
+        $options = array('conditions' => array(array('Task.member_id' => $id), array('Task.deadline >= ' => $data1, 'Task.deadline <= ' => $data2)));
+//        $options = array('conditions' => array(array('Task.member_id' => $id), array('Task.deadline' => array('Between', $data2, $data1))));
+        $tarefas = $this->Task->find('all', $options);
+
+        $this->set('tarefas', $tarefas);
+    }
+
+    public function metasks() {
+
+        $members = $this->Task->find('all', array(
+            'fields' => array(
+                'Task.member_id',
+                'COUNT(Task.member_id) as conta'
+            ),
+            'group' => 'Task.member_id'
+        ));
+
+        $this->set('members', $members);
+    }
 
 }
