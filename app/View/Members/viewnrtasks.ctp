@@ -11,6 +11,28 @@
 
 
 	<div class="row">
+            
+            <div class="row"> 
+<div class="col-md-3">
+            <div class="actions">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Actions</div>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Task'), array('action' => 'add'), array('escape' => false)); ?></li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List Members'), array('controller' => 'members', 'action' => 'index'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Members Per Functions'), array('controller' => 'members', 'action' => 'searchfunctiontasks'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Tasks Per Member'), array('controller' => 'tasks', 'action' => 'searchmembertasks'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Tasks Per Deadline'), array('controller' => 'tasks', 'action' => 'searchperdate'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Per Date Gap'), array('controller' => 'tasks', 'action' => 'memberbetweendatas'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Tasks Per Function'), array('controller' => 'tasks', 'action' => 'searchfunctionstasks'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Number of Tasks per Member'), array('controller' => 'members', 'action' => 'viewnrtasks'), array('escape' => false)); ?> </li>
+                        </ul>
+                    </div><!-- end body -->
+                </div><!-- end panel -->
+            </div><!-- end actions -->
+        </div><!-- end col md 3 -->
+        <?php echo $this->Session->flash('auth'); ?>
 
 		<div class="col-md-9">
 			<table cellpadding="0" cellspacing="0" class="table table-striped">

@@ -23,7 +23,9 @@
                             <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Members Per Functions'), array('controller' => 'members', 'action' => 'searchfunctiontasks'), array('escape' => false)); ?> </li>
                             <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Tasks Per Member'), array('controller' => 'tasks', 'action' => 'searchmembertasks'), array('escape' => false)); ?> </li>
                             <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Tasks Per Deadline'), array('controller' => 'tasks', 'action' => 'searchperdate'), array('escape' => false)); ?> </li>
-                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Per Task'), array('controller' => 'tasks', 'action' => 'searchpertask'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Per Member in Date Gap'), array('controller' => 'tasks', 'action' => 'memberbetweendatas'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Per Date Gap'), array('controller' => 'tasks', 'action' => 'betweendatas'), array('escape' => false)); ?> </li>
+                            <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search Tasks Per Function'), array('controller' => 'tasks', 'action' => 'searchfunctionstasks'), array('escape' => false)); ?> </li>
                             <li><?php echo $this->Html->link(__('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Number of Tasks per Member'), array('controller' => 'members', 'action' => 'viewnrtasks'), array('escape' => false)); ?> </li>
                         </ul>
                     </div><!-- end body -->

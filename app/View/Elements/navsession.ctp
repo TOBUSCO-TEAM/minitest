@@ -6,12 +6,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a target="_blank" href="#" class="navbar-brand">My sApp.</a>
+            <a href="<?php echo $this->Html->url('/tasks/'); ?>" class="navbar-brand">Tasks</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#">Inicio</a></li>
-                <li class="active"><a href="http://bootsnipp.com/snippets/featured/nav-account-manager" target="_blank">Inspirado en este ejemplo</a></li>
+                <li class="active"><a href="" target="_blank">Inspirado en este ejemplo</a></li>
                  <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">DropDown
                     <span class="caret"></span>

@@ -136,9 +136,9 @@ class TasksController extends AppController {
 //            
 //             $this->set('facul',$faculdade);
 
-        $datesearch = array();
+       
 
-        $query = $this->request->data['Task']['date'];
+        $query = $this->request->data['Task']['buscador'];
 
         $conditions = array(
             'conditions' => array(
@@ -146,10 +146,12 @@ class TasksController extends AppController {
             )
         );
 
-        $datesearch = $this->Task->find('all', $conditions);
+        //$datesearch = $this->Task->find('all', $conditions);
+        $this->Paginator->settings = $conditions;
+        $result = $this->Paginator->paginate('Task');
+        $this->set(compact('result'));
 
-
-        $this->set('datesearch', $datesearch);
+        //$this->set('datesearch', $datesearch);
 //debug($this->data);
     }
 
@@ -163,10 +165,12 @@ class TasksController extends AppController {
             )
         );
 
-        $result = $this->Task->find('all', $conditions);
-
-
-        $this->set('result', $result);
+       // $result = $this->Task->find('all', $conditions);
+        $this->Paginator->settings = $conditions;
+        $result = $this->Paginator->paginate('Task');
+        $this->set(compact('result'));
+        
+        //$this->set('result', $result);
 //debug($this->data);
     }
 
@@ -180,10 +184,12 @@ class TasksController extends AppController {
             )
         );
 
-        $result = $this->Task->find('all', $conditions);
+        //$result = $this->Task->find('all', $conditions);
+        $this->Paginator->settings = $conditions;
+        $result = $this->Paginator->paginate('Task');
+        $this->set(compact('result'));
 
-
-        $this->set('result', $result);
+        //$this->set('result', $result);
 //debug($this->data);
     }
 

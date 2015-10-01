@@ -116,7 +116,7 @@ $this->Auth->allow('view','index');
     }
 
     public function viewnrtasks($id = null) {/// metodo para buscar nr de tarefas por membro com recurso a propriedade counterCache(vide tabela e modelo Task)
-      $this->set('members', $this->Member->find('all'));
+      $this->set('members', $this->Paginator->paginate());
       
       
       //             $options = array('conditions' => array('Faculty.id' => $id));
@@ -147,10 +147,9 @@ $this->Auth->allow('view','index');
 
     }
 
-    public function searchfunctiontasks($id = null) {// metodo que busca membros que desempenham um determinado cargo e tem ou nao tem tarefas
+    public function searchfunctiontasks() {// metodo que busca membros que desempenham um determinado cargo e tem ou nao tem tarefas
         //$result = array();
         //$this->loadModel('Task');
-
         $query = $this->request->data['Member']['opcoes']; //parametro do select
         $query1 = $this->request->data['Member']['buscador'];// parametro do campo de texto
         if($query==0){      
@@ -178,10 +177,12 @@ $this->Auth->allow('view','index');
         );
         }
 
-        $result = $this->Member->find('all', $conditions);
+        //$result = $this->Member->find('all', $conditions);
+        $this->Paginator->settings = $conditions;
+        $result = $this->Paginator->paginate('Member');
+        $this->set(compact('result'));
 
-
-        $this->set('result', $result);
+        //$this->set('result', $result);
 //debug($this->data);
     }
 	  public function nomeasc() {
